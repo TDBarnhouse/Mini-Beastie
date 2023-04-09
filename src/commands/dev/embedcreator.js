@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder, Embed } = require('discord.js');
 require('dotenv').config({ 
     path: './config/.env' 
   });
+const { greenCheck, redX } = require('../../variables/logos.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -56,8 +57,12 @@ module.exports = {
                 return await interaction.reply({ content: 'You cannot make that your thumbnail.', ephemeral: true })
         }
 
+        const embedNo = new EmbedBuilder()
+                .setColor(0xFF0000)
+                .setDescription(`${redX} This command is only for devs.`)
+        
         if (interaction.user.id != process.env.MEMBER_ID)
-            return await interaction.reply({ content: 'This command is only for devs.', ephemeral: true });
+            await interaction.reply({ embeds: [embedNo], ephemeral: true });
         else {
             const embedSend = new EmbedBuilder()
                 .setTitle(title)
@@ -65,12 +70,12 @@ module.exports = {
                 .setColor(parseInt(color, 16))
                 .setImage(image)
                 .addFields({ name: `${fieldName}`, value: `${fieldValue}` })
-                .setFooter({ text: 'Mini-Beastie', iconURL: interaction.member.displayAvatarURL({ dynamic: true })})
+                .setFooter({ text: 'Mini-Beastie', iconURL: interaction.client.user.displayAvatarURL({ dynamic: true })})
                 .setTimestamp()
                 
             const embedReply = new EmbedBuilder()
                 .setColor(0xFF0000)
-                .setDescription(':greenCheck: Your custom embed has been created.' )
+                .setDescription(`${greenCheck} Your custom embed has been created.`)
 
             await interaction.reply({ embeds: [embedReply], ephemeral: true });
             await interaction.channel.send({ embeds: [embedSend] });

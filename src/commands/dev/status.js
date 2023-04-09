@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { greenCheck } = require('../../variables/logos.js');
 require('dotenv').config({ 
     path: './config/.env' 
   });
+const { greenCheck, redX } = require('../../variables/logos.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -23,8 +23,12 @@ module.exports = {
         const status = options.getString('status');
         const type = options.getString('type');
 
+        const embedNo = new EmbedBuilder()
+                .setColor(0xFF0000)
+                .setDescription(`${redX} This command is only for devs.`)
+        
         if (interaction.user.id != process.env.MEMBER_ID)
-            return await interaction.reply({ content: 'This command is only for devs.', ephemeral: true });
+            await interaction.reply({ embeds: [embedNo], ephemeral: true });
         else {
             client.user.setActivity({
                 name: status,
@@ -34,7 +38,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
             .setColor(0xFF0000)
-            .setDescription(`The status of the bot has been updated with \`${status}\` on type ${type - 1}.`)
+            .setDescription(`${greenCheck} The status of the bot has been updated with \`${status}\` on type ${type - 1}.`)
 		    
             await interaction.reply({ embeds: [embed], ephemeral: true });
         }
