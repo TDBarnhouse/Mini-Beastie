@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { greenCheck } = require('../../variables/logos.js');
 require('dotenv').config({ 
     path: './config/.env' 
   });
@@ -32,8 +33,8 @@ module.exports = {
             })
 
             const embed = new EmbedBuilder()
-                .setColor("Red")
-                .setDescription(`:white_check_mark: The status of the bot has been updated with \`${status}\` on type ${type - 1}`)
+            .setColor(0xFF0000)
+            .setDescription(`The status of the bot has been updated with \`${status}\` on type ${type - 1}.`)
 		    
             await interaction.reply({ embeds: [embed], ephemeral: true });
         }
