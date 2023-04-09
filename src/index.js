@@ -2,9 +2,9 @@ require('dotenv').config({
     path: './config/.env' 
   });
   
-const { Client, IntentsBitField } = require('discord.js');
-const { CommandHandler } = require('djs-commander');
+const {  Client, Collection, Events, IntentsBitField } = require('discord.js');
 const path = require('path');
+const fs = require('fs');
 
 const client = new Client({
   intents: [
@@ -15,12 +15,23 @@ const client = new Client({
   ],
 });
 
-new CommandHandler({
-  client,
-  commandsPath: path.join(__dirname, 'commands'),
-  eventsPath: path.join(__dirname, 'events'),
-  validationsPath: path.join(__dirname, 'validations'),
-  testServer: process.env.GUILD_ID,
-})
+client.commands = new Collection();
 
-client.login(process.env.TOKEN);
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
+const handlersPath = path.join(__dirname, 'handlers');
+const handlerFiles = fs.readdirSync(handlersPath).filter(file => file.endsWith('.js'));
+
+
+
+
+(async () => {
+  for (file of handlerFiles) {
+    require(`./handlers/${file}`)(client);
+  }
+  client.handleEvents(eventFiles, "./src/events");
+  client.handleCommands(commandFolders, "./src/commands");
+  client.login(process.env.TOKEN);
+})();
