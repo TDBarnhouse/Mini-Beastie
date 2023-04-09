@@ -24,9 +24,6 @@ const commandFolders = fs.readdirSync(foldersPath);
 const handlersPath = path.join(__dirname, 'handlers');
 const handlerFiles = fs.readdirSync(handlersPath).filter(file => file.endsWith('.js'));
 
-
-
-
 (async () => {
   for (file of handlerFiles) {
     require(`./handlers/${file}`)(client);
