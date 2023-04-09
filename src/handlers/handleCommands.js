@@ -21,7 +21,7 @@ module.exports = (client) => {
                     client.commands.set(command.data.name, command);
                     client.commandArray.push(command.data.toJSON());
                 } else {
-                    console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+                    console.log(`[WARNING] The command at ${commandFiles} is missing a required "data" or "execute" property.`);
                 }
             }
         }
