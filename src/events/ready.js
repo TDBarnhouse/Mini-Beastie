@@ -44,15 +44,15 @@ module.exports = {
 			})
 		}
 
+		setInterval(() => {
+			activity();
+		}, 100000000)
+
 		RPC.on('ready', async () => {
 			console.log('RPC Presence is up.');
 			activity();
-		
-			setInterval(() => {
-				activity();
-			}, 15 * 1000)
 		})
+
 		RPC.login({ clientId: process.env.RPC_ID });
-	},
-	
+	},	
 };
