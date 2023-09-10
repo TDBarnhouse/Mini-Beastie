@@ -3,11 +3,12 @@
   "version": "2.0.0",
   "description": "Personal bot for Beastie's discord server.",
   "main": "src/index.js",
+  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "ItsBeastieBoy",
   "license": "ISC",
   "dependencies": {
     "discord-rpc": "^4.0.1",
