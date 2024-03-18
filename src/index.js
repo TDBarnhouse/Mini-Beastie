@@ -1,5 +1,5 @@
 require('dotenv').config({ 
-    path: './config/.env' 
+    path: '../config/.env' 
   });
   
 const {  Client, Collection, Events, IntentsBitField } = require('discord.js');
