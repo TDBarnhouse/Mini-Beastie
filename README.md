@@ -1,2 +1,2 @@
 # Mini-Beastie
-Personal bot for Beastie's discord server.
+My personal bot for my Discord server. 
