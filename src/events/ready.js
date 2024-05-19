@@ -15,9 +15,9 @@ module.exports = {
         console.log(`${client.user.tag} is now online.`);
 
 		client.user.setActivity({
-			name: 'Visual Studio Code',
+			name: 'Beautiful People',
 			type: ActivityType.playing,
-			url: 'https://twitch.tv/ItsBeastieBoy',
+			url: 'https://twitch.tv/ImBeastieBoy',
 		});
 
 		async function activity() {
@@ -25,7 +25,7 @@ module.exports = {
 				return
 		
 			RPC.setActivity({
-				details: 'Mini-Beastie v2.0',
+				details: 'Mini-Beastie v1.1.7',
 				state: '(╯°□°）╯︵ ┻━┻',
 				largeImageKey: 'https://media.giphy.com/media/JUgVtMOrWtprW/giphy.gif',
 				smallImageKey: 'https://c.tenor.com/TgKK6YKNkm0AAAAi/verified-verificado.gif',
@@ -34,7 +34,7 @@ module.exports = {
 				buttons: [
 					{
 						label: 'Twitch',
-						url: 'https://twitch.tv/ItsBeastieBoy'
+						url: 'https://twitch.tv/ImBeastieBoy'
 					},
 					{
 						label: 'Discord',
