@@ -1,13 +1,13 @@
 const { SlashCommandBuilder, EmbedBuilder, Embed } = require('discord.js');
 require('dotenv').config({ 
     path: './config/.env' 
-  });
+});
 const { greenCheck, redX } = require('../../variables/logos.js');
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('embedcreator')
-		.setDescription('Create a new embed (Use /whitespace for whitespace characters to create new lines)')
+    data: new SlashCommandBuilder()
+        .setName('embedcreator')
+        .setDescription('Create a new embed (Use /whitespace for whitespace characters to create new lines)')
         .addStringOption(option => option
             .setName('title')
             .setDescription('The title of the embed')
@@ -20,7 +20,7 @@ module.exports = {
             .setName('color')
             .setDescription('The color of the embed in hex')
             .setMaxLength(6)
-            .setRequired(true))	
+            .setRequired(true))
         .addStringOption(option => option
             .setName('image')
             .setDescription('The image of the embed')
@@ -32,13 +32,19 @@ module.exports = {
         .addStringOption(option => option
             .setName('field-name')
             .setDescription('The field name of the embed')
-            .setRequired(false))  
+            .setRequired(false))
         .addStringOption(option => option
             .setName('field-value')
             .setDescription('The field value of the embed')
+            .setRequired(false))
+        .addBooleanOption(option => option
+            .setName('timestamp')
+            .setDescription('Include a timestamp')
             .setRequired(false)),
+
     async execute(interaction) {
         const { options } = interaction;
+
         const title = options.getString('title');
         const description = options.getString('description');
         const color = options.getString('color');
@@ -46,39 +52,49 @@ module.exports = {
         const thumbnail = options.getString('thumbnail');
         const fieldName = options.getString('field-name') || ' ';
         const fieldValue = options.getString('field-value') || ' ';
+        const timestamp = options.getBoolean('timestamp');
 
         if(image) {
             if(!image.startsWith('http'))
-                return await interaction.reply({ content: 'You cannot make that your image.', ephemeral: true })
+                return await interaction.reply({ content: 'You cannot make that your image.', ephemeral: true });
         }
 
-        if (thumbnail) {
+        if(thumbnail) {
             if(!thumbnail.startsWith('http'))
-                return await interaction.reply({ content: 'You cannot make that your thumbnail.', ephemeral: true })
+                return await interaction.reply({ content: 'You cannot make that your thumbnail.', ephemeral: true });
         }
 
         const embedNo = new EmbedBuilder()
-                .setColor(0xFF0000)
-                .setDescription(`${redX} This command is only for devs.`)
-        
-        if (interaction.user.id != process.env.MEMBER_ID)
+            .setColor(0xFF0000)
+            .setDescription(`${redX} This command is only for devs.`);
+
+        if (interaction.user.id != process.env.MEMBER_ID) {
             await interaction.reply({ embeds: [embedNo], ephemeral: true });
-        else {
+        } else {
+
             const embedSend = new EmbedBuilder()
                 .setTitle(title)
                 .setDescription(description)
                 .setColor(parseInt(color, 16))
                 .setImage(image)
                 .addFields({ name: `${fieldName}`, value: `${fieldValue}` })
-                .setFooter({ text: 'Mini-Beastie', iconURL: interaction.client.user.displayAvatarURL({ dynamic: true })})
-                .setTimestamp()
-                
+                .setFooter({
+                    text: 'Mini-Beastie',
+                    iconURL: interaction.client.user.displayAvatarURL({ dynamic: true })
+                });
+
+            if (thumbnail)
+                embedSend.setThumbnail(thumbnail);
+
+            if (timestamp)
+                embedSend.setTimestamp();
+
             const embedReply = new EmbedBuilder()
-                .setColor(0xFF0000)
-                .setDescription(`${greenCheck} Your custom embed has been created.`)
+                .setColor(0x00FF00)
+                .setDescription(`${greenCheck} Your custom embed has been created.`);
 
             await interaction.reply({ embeds: [embedReply], ephemeral: true });
             await interaction.channel.send({ embeds: [embedSend] });
         }
-	},
+    },
 };
