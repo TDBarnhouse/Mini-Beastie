@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, Embed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 require('dotenv').config({ 
     path: './config/.env' 
 });
@@ -40,7 +40,12 @@ module.exports = {
         .addBooleanOption(option => option
             .setName('timestamp')
             .setDescription('Include a timestamp')
+            .setRequired(false))
+        .addStringOption(option => option
+            .setName('footer')
+            .setDescription('The footer of the embed')
             .setRequired(false)),
+
 
     async execute(interaction) {
         const { options } = interaction;
@@ -50,51 +55,50 @@ module.exports = {
         const color = options.getString('color');
         const image = options.getString('image');
         const thumbnail = options.getString('thumbnail');
-        const fieldName = options.getString('field-name') || ' ';
-        const fieldValue = options.getString('field-value') || ' ';
+
+        const fieldName = options.getString('field-name');
+        const fieldValue = options.getString('field-value');
+
         const timestamp = options.getBoolean('timestamp');
+        const footer = options.getString('footer');
 
-        if(image) {
-            if(!image.startsWith('http'))
-                return await interaction.reply({ content: 'You cannot make that your image.', ephemeral: true });
-        }
+        if (image && !image.startsWith('http'))
+            return await interaction.reply({ content: 'You cannot make that your image.', ephemeral: true });
 
-        if(thumbnail) {
-            if(!thumbnail.startsWith('http'))
-                return await interaction.reply({ content: 'You cannot make that your thumbnail.', ephemeral: true });
-        }
+        if (thumbnail && !thumbnail.startsWith('http'))
+            return await interaction.reply({ content: 'You cannot make that your thumbnail.', ephemeral: true });
 
         const embedNo = new EmbedBuilder()
             .setColor(0xFF0000)
             .setDescription(`${redX} This command is only for devs.`);
 
         if (interaction.user.id != process.env.MEMBER_ID) {
-            await interaction.reply({ embeds: [embedNo], ephemeral: true });
-        } else {
-
-            const embedSend = new EmbedBuilder()
-                .setTitle(title)
-                .setDescription(description)
-                .setColor(parseInt(color, 16))
-                .setImage(image)
-                .addFields({ name: `${fieldName}`, value: `${fieldValue}` })
-                .setFooter({
-                    text: 'Mini-Beastie',
-                    iconURL: interaction.client.user.displayAvatarURL({ dynamic: true })
-                });
-
-            if (thumbnail)
-                embedSend.setThumbnail(thumbnail);
-
-            if (timestamp)
-                embedSend.setTimestamp();
-
-            const embedReply = new EmbedBuilder()
-                .setColor(0x00FF00)
-                .setDescription(`${greenCheck} Your custom embed has been created.`);
-
-            await interaction.reply({ embeds: [embedReply], ephemeral: true });
-            await interaction.channel.send({ embeds: [embedSend] });
+            return await interaction.reply({ embeds: [embedNo], ephemeral: true });
         }
+
+        const embedSend = new EmbedBuilder()
+            .setTitle(title)
+            .setDescription(description)
+            .setColor(parseInt(color, 16));
+
+        if (image) embedSend.setImage(image);
+        if (thumbnail) embedSend.setThumbnail(thumbnail);
+
+        if (fieldName && fieldValue && fieldName.trim() !== '' && fieldValue.trim() !== '') {
+            embedSend.addFields({ name: fieldName, value: fieldValue });
+        }
+
+        if (timestamp) embedSend.setTimestamp();
+
+        if (footer && footer.trim() !== '') {
+            embedSend.setFooter({ text: footer });
+        }
+
+        const embedReply = new EmbedBuilder()
+            .setColor(0x00FF00)
+            .setDescription(`${greenCheck} Your custom embed has been created.`);
+
+        await interaction.reply({ embeds: [embedReply], ephemeral: true });
+        await interaction.channel.send({ embeds: [embedSend] });
     },
 };
