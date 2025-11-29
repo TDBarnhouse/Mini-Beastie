@@ -46,7 +46,6 @@ module.exports = {
             .setDescription('The footer of the embed')
             .setRequired(false)),
 
-
     async execute(interaction) {
         const { options } = interaction;
 
