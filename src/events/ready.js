@@ -25,7 +25,7 @@ module.exports = {
 				return
 		
 			RPC.setActivity({
-				details: 'Mini-Beastie v1.1.7',
+				details: 'Mini-Beastie v1.2.3',
 				state: '(╯°□°）╯︵ ┻━┻',
 				largeImageKey: 'https://media.giphy.com/media/JUgVtMOrWtprW/giphy.gif',
 				smallImageKey: 'https://c.tenor.com/TgKK6YKNkm0AAAAi/verified-verificado.gif',
