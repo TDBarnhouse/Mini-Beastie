@@ -7,7 +7,7 @@ const { greenCheck, redX } = require('../../variables/logos.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('embedcreator')
-        .setDescription('Create a new embed (Use /whitespace for whitespace characters to create new lines)')
+        .setDescription('Create a new embed')
         .addStringOption(option => option
             .setName('title')
             .setDescription('The title of the embed')
@@ -62,10 +62,10 @@ module.exports = {
         const footer = options.getString('footer');
 
         if (image && !image.startsWith('http'))
-            return await interaction.reply({ content: 'You cannot make that your image.', ephemeral: true });
+            return await interaction.reply({ content: 'Invalid image URL.', ephemeral: true });
 
         if (thumbnail && !thumbnail.startsWith('http'))
-            return await interaction.reply({ content: 'You cannot make that your thumbnail.', ephemeral: true });
+            return await interaction.reply({ content: 'Invalid thumbnail URL.', ephemeral: true });
 
         const embedNo = new EmbedBuilder()
             .setColor(0xFF0000)
