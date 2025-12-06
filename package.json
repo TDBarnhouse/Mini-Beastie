@@ -1,6 +1,6 @@
 {
   "name": "mini-beastie",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "My personal bot for my Discord server.",
   "main": "src/index.js",
   

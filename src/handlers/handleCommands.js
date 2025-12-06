@@ -33,8 +33,8 @@ module.exports = (client) => {
                 console.log(`Started refreshing ${client.commandArray.length} application (/) commands.`);
 
                 const data = await rest.put(
-                    // Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
-                    Routes.applicationCommands(process.env.CLIENT_ID),
+                    // Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), // For a single Discord server use this line
+                    Routes.applicationCommands(process.env.CLIENT_ID), // For multiple Discord servers use this line
                     { body: client.commandArray },
                 );
 
